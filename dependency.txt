@@ -1,0 +1,24 @@
+npm install "@expo/react-native-action-sheet",
+npm install "@react-native-async-storage/async-storage@1.23.1",
+npm install '@react-native-community/datetimepicker'
+npm install react-native-modal-datetime-picker
+npm install "@react-native-community/netinfo",
+npm install "@react-navigation/drawer",
+npm install "@react-navigation/native",
+npm install "@react-navigation/native-stack",
+npm install "expo-camera",
+npm install "expo-image-picker",
+npm install "firebase",
+npm install "react-native-safe-area-context",
+npm install "react-native-screens",
+npm install "react-native-vector-icons"
+npm install @react-navigation/material-top-tabs react-native-tab-view
+npm install "react-native-dropdown-picker"
+npm install "@react-native-segmented-control/segmented-control"
+npm install "expo-linear-gradient"
+npm install "react-native-gesture-handler"
+npm install "react-native-gifted-charts"
+npm install "react-native-linear-gradient"
+npm install "react-native-pager-view"
+npm install "gifted-charts-core"
+npm install "react-native-svg"

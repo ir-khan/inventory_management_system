@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "inventory_management_system",
+    "name": "Staff and Inventory Management",
     "slug": "inventory_management_system",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -18,10 +18,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.izn_ur_rehman.inventory_management_system"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d32ef223-e9a8-4467-9407-dfc2840e0288"
+      }
     }
   }
 }
