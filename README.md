@@ -1,1 +1,1 @@
-# ir-khan-inventory_management_system
+# inventory_management_system
