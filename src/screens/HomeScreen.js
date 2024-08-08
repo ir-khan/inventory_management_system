@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from '../components';
@@ -7,6 +7,7 @@ import { ROUTES } from '../constants';
 import { LineChart, BarChart } from 'react-native-gifted-charts';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { DatabaseService } from '../services';
+import debounce from 'lodash.debounce';
 
 const HomeScreen = ({ navigation }) => {
     const [totalGrossSales, setTotalGrossSales] = useState([]);
@@ -30,11 +31,12 @@ const HomeScreen = ({ navigation }) => {
 
     const fetchSales = async () => {
         const handleSuccess = (transactions) => {
-            console.log("Transactions: ", transactions);
+            console.log("Fetched Transactions: ", transactions);
 
             const totalSalesMap = transactions.reduce((acc, transaction) => {
                 const date = new Date(transaction.timestamp);
-                const dateStr = date.toISOString().split('T')[0];
+                const dateStr = date.toISOString().split('T')[0]; // Ensure only the date part is used
+
                 if (!acc.total[dateStr]) {
                     acc.total[dateStr] = 0;
                 }
@@ -48,10 +50,12 @@ const HomeScreen = ({ navigation }) => {
                 return acc;
             }, { total: {}, product: {} });
 
+            console.log("Total Sales Map: ", totalSalesMap); // Check the aggregation result
+
             const sortedDates = Object.keys(totalSalesMap.total).sort();
             const formattedSalesData = sortedDates.map(date => {
                 const [year, month, day] = date.split('-');
-                const formattedDate = `${day}/${month}`;
+                const formattedDate = `${day}/${month}`; // Format: dd/mm
                 return {
                     value: totalSalesMap.total[date],
                     label: formattedDate,
@@ -74,11 +78,16 @@ const HomeScreen = ({ navigation }) => {
             console.error("Error fetching sales data: ", error);
         };
 
+        console.log("Fetching sales from:", startDate.toISOString(), "to", endDate.toISOString());
+
         dbService.getTotalSales(startDate.toISOString(), endDate.toISOString(), handleSuccess, handleError);
     };
 
+    const debouncedFetchSales = useMemo(() => debounce(fetchSales, 500), [startDate, endDate]);
+
     useEffect(() => {
-        fetchSales();
+        debouncedFetchSales();
+        return () => debouncedFetchSales.cancel();
     }, [startDate, endDate]);
 
     const onStartDateChange = (date) => {
@@ -101,7 +110,7 @@ const HomeScreen = ({ navigation }) => {
             : 'dd/mm/yyyy';
     };
 
-    const emptyChartData = [{ value: 0, label: 'Loading...' }];
+    const emptyChartData = [{ value: 0, label: '' }];
 
     return (
         <SafeAreaView style={styles.container}>
@@ -148,7 +157,11 @@ const HomeScreen = ({ navigation }) => {
                         />
                     </View>
                 </View>
-                <TouchableOpacity style={styles.fetchButton} onPress={fetchSales}>
+                <TouchableOpacity
+                    style={[styles.fetchButton, { backgroundColor: startDate && endDate ? '#004643' : '#ccc' }]}
+                    onPress={() => debouncedFetchSales()}
+                    disabled={!startDate || !endDate}
+                >
                     <Text style={styles.buttonText}>Fetch Sales</Text>
                 </TouchableOpacity>
                 <Text style={styles.title}>Total Gross Sales</Text>
@@ -224,7 +237,6 @@ const styles = StyleSheet.create({
         color: '#999',
     },
     fetchButton: {
-        backgroundColor: '#004643',
         paddingVertical: 8,
         paddingHorizontal: 16,
         borderRadius: 5,

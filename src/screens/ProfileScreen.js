@@ -6,11 +6,8 @@ import NetInfo from '@react-native-community/netinfo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { IMGS, ROUTES } from '../constants';
 import { Entypo, AntDesign } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 
-const ProfileScreen = () => {
-    const navigation = useNavigation();
-
+const ProfileScreen = ({ navigation }) => {
     const [user, setUser] = useState({});
     const [isEditing, setIsEditing] = useState(false);
     const [fullname, setFullname] = useState('');
@@ -144,7 +141,7 @@ const ProfileScreen = () => {
             await authService.logout();
             navigation.reset({
                 index: 0,
-                routes: [{ name: ROUTES.AUTH }],
+                routes: [{ name: ROUTES.LOGIN }],
             });
         } catch (error) {
             Alert.alert('Logout Error', error.message);
