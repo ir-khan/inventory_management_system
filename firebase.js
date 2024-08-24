@@ -11,16 +11,17 @@ import {
 import { initializeFirestore, CACHE_SIZE_UNLIMITED } from 'firebase/firestore';
 import { getStorage } from "firebase/storage";
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+import { API_KEY, AUTH_DOMAIN, PROJECT_ID, STORAGE_BUCKET, MESSAGING_SENDER_ID, APP_ID } from '@env';
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyDc_eSQTOuxENCd9Jzch1ChM8KRB8twxG0",
-    authDomain: "staff-and-inventory-management.firebaseapp.com",
-    projectId: "staff-and-inventory-management",
-    storageBucket: "staff-and-inventory-management.appspot.com",
-    messagingSenderId: "628824106952",
-    appId: "1:628824106952:web:8fd276b3ef3e724f53c2fd"
+    apiKey: API_KEY,
+    authDomain: AUTH_DOMAIN,
+    projectId: PROJECT_ID,
+    storageBucket: STORAGE_BUCKET,
+    messagingSenderId: MESSAGING_SENDER_ID,
+    appId: APP_ID,
 };
 
 // Initialize Firebase
